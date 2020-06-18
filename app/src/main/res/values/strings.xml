@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Voice Cammander</string>
+    <string name="Theam2">Contacts</string>
+    <string name="permission">This required for reading the Contact </string>
+    <string name="Battery">The Battery Level is </string>
+    <string name="personnumber">PersonNumber</string>
+    <string name="person_name">Person Name</string>
+    <string name="here_is_massege_summary">HERE IS MASSEGE SUMMARY</string>
+    <string name="todo">TODO</string>
+    <string name="button">Button</string>
+</resources>

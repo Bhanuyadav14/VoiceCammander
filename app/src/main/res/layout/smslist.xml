@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp">
+
+    <ImageView
+        android:id="@+id/Avataer"
+        android:layout_width="82dp"
+        android:layout_height="85dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="13dp"
+        android:background="@drawable/contactimage"
+        android:contentDescription="@string/todo"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+    <TextView
+        android:id="@+id/PNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/Avataer"
+        android:text="@string/personnumber"
+        android:textSize="20sp"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="25dp"
+
+        />
+    <TextView
+        android:id="@+id/pName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/person_name"
+        android:textSize="20sp"
+        android:layout_toEndOf="@id/Avataer"
+        android:layout_below="@id/PNumber"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="25dp"/>
+
+    <TextView
+        android:id="@+id/TextMAssege"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/here_is_massege_summary"
+        android:textSize="20sp"
+        android:layout_marginTop="150sp"
+        android:layout_marginStart="10dp"
+        />
+
+</RelativeLayout>
