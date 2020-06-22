@@ -1,5 +1,10 @@
 package com.example.voicecammander
 
-import android.media.Image
+import android.graphics.Bitmap
 
-data class IteamLayout (val imagesrc:Int,val PName:String,val PNumber:String,val SMSMESSEGE :String)
+class IteamLayout {
+    var imagesrc: Bitmap? = null
+    var PName: String = ""
+    var PNumber: String = ""
+    var SMSMESSEGE: String = ""
+}
