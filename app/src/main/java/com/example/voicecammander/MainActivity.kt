@@ -13,10 +13,10 @@ import androidx.core.app.ActivityCompat
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var button1 : Button
+    private lateinit var button1: Button
     private lateinit var button2: Button
     private lateinit var button3: Button
-    val MyRequest: Int = 12345
+    val MyRequest: Int = 1234
     val permission: Array<String> = arrayOf(
         Manifest.permission.READ_CONTACTS,
         Manifest.permission.WRITE_CONTACTS,
@@ -32,8 +32,7 @@ class MainActivity : AppCompatActivity() {
         button2 = findViewById(R.id.inboxmsg)
         button3 = findViewById(R.id.BatteryInfo)
 
-        button3.setOnClickListener { val intent = Intent(this ,Battery::class.java)
-            startActivity(intent) }
+
 
 
         if (ActivityCompat.checkSelfPermission(
@@ -47,6 +46,10 @@ class MainActivity : AppCompatActivity() {
             }
             button2.setOnClickListener {
                 val intent = Intent(this, Inbox::class.java)
+                startActivity(intent)
+            }
+            button3.setOnClickListener {
+                val intent = Intent(this, Battery::class.java)
                 startActivity(intent)
             }
             Toast.makeText(this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show()
@@ -81,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                             //
                         })
                     Aletbox.show()
-               }
+                }
            else{
 
                    Toast.makeText(this, "This PERMISSION All Redy GRANTED",Toast.LENGTH_SHORT).show()
@@ -105,12 +108,20 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         if(requestCode == MyRequest){
-            if ((grantResults.isNotEmpty()) && (grantResults[0] == PackageManager.PERMISSION_GRANTED )||(grantResults[1] == PackageManager.PERMISSION_GRANTED) ||(grantResults[2] == PackageManager.PERMISSION_GRANTED)||(grantResults[3]==PackageManager.PERMISSION_GRANTED)){
-                button1.setOnClickListener { val intent = Intent(this ,Contact::class.java)
-                    startActivity(intent)}
-                button2.setOnClickListener { val intent = Intent(this ,Inbox::class.java)
-                    startActivity(intent)}
-                Toast.makeText(this, "PERMISSION GRANTED",Toast.LENGTH_SHORT).show()
+            if ((grantResults.isNotEmpty()) && (grantResults[0] == PackageManager.PERMISSION_GRANTED )||(grantResults[1] == PackageManager.PERMISSION_GRANTED) ||(grantResults[2] == PackageManager.PERMISSION_GRANTED)||(grantResults[3]==PackageManager.PERMISSION_GRANTED)) {
+                button1.setOnClickListener {
+                    val intent = Intent(this, Contact::class.java)
+                    startActivity(intent)
+                }
+                button2.setOnClickListener {
+                    val intent = Intent(this, Inbox::class.java)
+                    startActivity(intent)
+                }
+                button3.setOnClickListener {
+                    val intent = Intent(this, Battery::class.java)
+                    startActivity(intent)
+                }
+                Toast.makeText(this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show()
             }
             else{
                 Toast.makeText(this, "PERMISSION Not GRANTED",Toast.LENGTH_SHORT).show()
