@@ -22,10 +22,11 @@ class Battery : AppCompatActivity(),TextToSpeech.OnInitListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_battery)
+
+
         val  tesxtView = findViewById<TextView>(R.id.BatteryResult)
         tesxtView.text = "" + getBatteryStatus() + "%"
 
-        getBatteryStatus()
 
     }
 
@@ -48,7 +49,6 @@ class Battery : AppCompatActivity(),TextToSpeech.OnInitListener {
 
         return batteryLevel
 
-        speakOut(batteryLevel)
 
     }
 
@@ -60,8 +60,8 @@ class Battery : AppCompatActivity(),TextToSpeech.OnInitListener {
         }
     }
 
-    private fun speakOut(batteryLevel: Int) {
-        val text: String = "The Baattery Level Is ${batteryLevel}"
+    private fun speakOut(bt: String) {
+        val text: String = "The Baattery Level Is ${bt}"
 
         tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
     }
