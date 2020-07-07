@@ -1,22 +1,25 @@
 package com.example.voicecammander
 
 import android.Manifest
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var button1: Button
     private lateinit var button2: Button
     private lateinit var button3: Button
-    val MyRequest: Int = 4
+    val MyRequest1: Int = 1
+    val MyRequest2: Int = 2
+    val MyRequest3: Int = 3
     val permission: Array<String> = arrayOf(
         Manifest.permission.READ_CONTACTS,
         Manifest.permission.WRITE_CONTACTS,
@@ -32,123 +35,59 @@ class MainActivity : AppCompatActivity() {
         button2 = findViewById(R.id.inboxmsg)
         button3 = findViewById(R.id.BatteryInfo)
 
+        ButtonClick()
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_CONTACTS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+    }
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    Manifest.permission.READ_CONTACTS
-                )
-            ) {
-                val Aletbox: AlertDialog.Builder = AlertDialog.Builder(
-                    this
-                )
-//                   Aletbox.setTitle("Grant These Permission")
-                Aletbox.setMessage("This Permission Requred for Reading Contacts And etc..")
-                Aletbox.setNegativeButton(
-                        "Deny",
-                        DialogInterface.OnClickListener { dialog, which ->
+    private fun ButtonClick() {
 
-                            Aletbox.show()
-                        })
-                    Aletbox.setPositiveButton(
-                        "Allow",
-                        DialogInterface.OnClickListener { dialog, which ->
-                            ActivityCompat.requestPermissions(this, permission, MyRequest)
-
-                            //
-                        })
-                Aletbox.show()
-            } else {
-
-                Toast.makeText(this, "This PERMISSION All Redy GRANTED", Toast.LENGTH_SHORT).show()
-            }
-
-        } else {
-
-            button1.setOnClickListener {
-                val intent = Intent(this, Contact::class.java)
-                startActivity(intent)
-            }
-            button2.setOnClickListener {
-                val intent = Intent(this, Inbox::class.java)
-                startActivity(intent)
-            }
-            button3.setOnClickListener {
-                val intent = Intent(this, Battery::class.java)
-                startActivity(intent)
-            }
-            Toast.makeText(this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show()
-
+        button1.setOnClickListener {
+            CheckPermission(permission, "ContactReading", MyRequest1)
+            val intent = Intent(this, Contact::class.java)
+            startActivity(intent)
         }
 
+        button2.setOnClickListener {
+            CheckPermission(permission, "Inbox", MyRequest2)
+            val intent = Intent(this, Inbox::class.java)
+            startActivity(intent)
+        }
 
-//        if (ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.READ_CONTACTS
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            button1.setOnClickListener {
-//                val intent = Intent(this, Contact::class.java)
-//                startActivity(intent)
-//            }
-//            button2.setOnClickListener {
-//                val intent = Intent(this, Inbox::class.java)
-//                startActivity(intent)
-//            }
-//            button3.setOnClickListener {
-//                val intent = Intent(this, Battery::class.java)
-//                startActivity(intent)
-//            }
-//            Toast.makeText(this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show()
-//        } else {
-//
-//            if (ActivityCompat.checkSelfPermission(
-//                    this,
-//                    Manifest.permission.READ_CONTACTS
-//                ) != PackageManager.PERMISSION_GRANTED
-//            ) {
-//                if (ActivityCompat.shouldShowRequestPermissionRationale(
-//                        this,
-//                        Manifest.permission.READ_CONTACTS
-//                    )
-//                ) {
-//                    val Aletbox: AlertDialog.Builder = AlertDialog.Builder(
-//                        this
-//                    )
-////                   Aletbox.setTitle("Grant These Permission")
-//                    Aletbox.setMessage("This Permission Requred for Reading Contacts And etc..")
-//                    Aletbox.setNegativeButton(
-//                        "Deny",
-//                        DialogInterface.OnClickListener { dialog, which ->
-//
-//                            Aletbox.show()
-//                        })
-//                    Aletbox.setPositiveButton(
-//                        "Allow",
-//                        DialogInterface.OnClickListener { dialog, which ->
-//                            ActivityCompat.requestPermissions(this, permission, MyRequest)
-//
-//                            //
-//                        })
-//                    Aletbox.show()
-//                }
-//           else{
-//
-//                   Toast.makeText(this, "This PERMISSION All Redy GRANTED",Toast.LENGTH_SHORT).show()
-//               }}
-//           else {
-//                   Toast.makeText(this, "This PERMISSION IS NOT GRANTED",Toast.LENGTH_SHORT).show()
-//               }
-//          // if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_CONTACTS)!=PackageManager.PERMISSION_GRANTED)
-//
-//
-//       }
+        button3.setOnClickListener {
+            CheckPermission(permission, "Battery", MyRequest3)
+            val intent = Intent(this, Battery::class.java)
+            startActivity(intent)
+        }
 
+    }
+
+    private fun CheckPermission(permission: Array<String>, name: String, requestcode: Int) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            when {
+                ContextCompat.checkSelfPermission(
+                    applicationContext,
+                    permission.toString()
+                ) == PackageManager.PERMISSION_GRANTED -> {
+
+                    Toast.makeText(
+                        applicationContext,
+                        "$name permission granted",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
+                shouldShowRequestPermissionRationale(permission.toString()) -> showDialog(
+                    permission,
+                    name,
+                    requestcode
+                )
+
+                else -> ActivityCompat.requestPermissions(this, permission, requestcode)
+            }
+
+        }
 
     }
 
@@ -157,26 +96,40 @@ class MainActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if(requestCode == MyRequest){
-            if ((grantResults.isNotEmpty()) && (grantResults[0] == PackageManager.PERMISSION_GRANTED )||(grantResults[1] == PackageManager.PERMISSION_GRANTED) ||(grantResults[2] == PackageManager.PERMISSION_GRANTED)||(grantResults[3]==PackageManager.PERMISSION_GRANTED)) {
-                button1.setOnClickListener {
-                    val intent = Intent(this, Contact::class.java)
-                    startActivity(intent)
-                }
-                button2.setOnClickListener {
-                    val intent = Intent(this, Inbox::class.java)
-                    startActivity(intent)
-                }
-                button3.setOnClickListener {
-                    val intent = Intent(this, Battery::class.java)
-                    startActivity(intent)
-                }
-                Toast.makeText(this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show()
-            }
-            else{
-                Toast.makeText(this, "PERMISSION Not GRANTED",Toast.LENGTH_SHORT).show()
+        fun innercheck(name: String) {
+            if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+                Toast.makeText(applicationContext, "$name Permission Refused", Toast.LENGTH_SHORT)
+                    .show()
+
+            } else {
+                Toast.makeText(applicationContext, "$name Permission Granted", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
+
+        when (requestCode) {
+            MyRequest1 -> innercheck("ContactReading")
+            MyRequest2 -> innercheck("Inbox")
+            MyRequest3 -> innercheck("Battery")
+        }
     }
+
+    private fun showDialog(permission: Array<String>, name: String, requestCode: Int) {
+
+        val builder = AlertDialog.Builder(this)
+        builder.apply {
+            setMessage("Permission to Access your $name is required to use this app")
+            setTitle("Permission Required")
+            setPositiveButton("Allow") { dialog, which ->
+                ActivityCompat.requestPermissions(this@MainActivity, permission, requestCode)
+            }
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+
+    }
+
 
 }
