@@ -12,9 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 
 class Inbox : AppCompatActivity() {
 
-    val REQUEST_CODE: Int = 1
+    val REQUEST_CODE: Int = 3
     var permissions: Array<String> =
-        arrayOf(Manifest.permission.READ_SMS, Manifest.permission.SEND_SMS)
+        arrayOf(
+            Manifest.permission.READ_SMS,
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.RECEIVE_SMS
+        )
     var SMSLIST: ArrayList<String> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +78,7 @@ class Inbox : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE) {
-            if ((grantResults.isEmpty()) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            if ((grantResults.isEmpty()) && (grantResults[0] == PackageManager.PERMISSION_GRANTED) || (grantResults[1] == PackageManager.PERMISSION_GRANTED) || (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
             }
             val intent = Intent(this, Inbox::class.java)
             startActivity(intent)

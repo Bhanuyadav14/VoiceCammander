@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var button1: Button
     private lateinit var button2: Button
     private lateinit var button3: Button
-    val MyRequest: Int = 1234
+    val MyRequest: Int = 4
     val permission: Array<String> = arrayOf(
         Manifest.permission.READ_CONTACTS,
         Manifest.permission.WRITE_CONTACTS,
