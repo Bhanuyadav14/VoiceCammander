@@ -33,13 +33,43 @@ class MainActivity : AppCompatActivity() {
         button3 = findViewById(R.id.BatteryInfo)
 
 
-
-
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.READ_CONTACTS
-            ) == PackageManager.PERMISSION_GRANTED
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.READ_CONTACTS
+                )
+            ) {
+                val Aletbox: AlertDialog.Builder = AlertDialog.Builder(
+                    this
+                )
+//                   Aletbox.setTitle("Grant These Permission")
+                Aletbox.setMessage("This Permission Requred for Reading Contacts And etc..")
+                Aletbox.setNegativeButton(
+                        "Deny",
+                        DialogInterface.OnClickListener { dialog, which ->
+
+                            Aletbox.show()
+                        })
+                    Aletbox.setPositiveButton(
+                        "Allow",
+                        DialogInterface.OnClickListener { dialog, which ->
+                            ActivityCompat.requestPermissions(this, permission, MyRequest)
+
+                            //
+                        })
+                Aletbox.show()
+            } else {
+
+                Toast.makeText(this, "This PERMISSION All Redy GRANTED", Toast.LENGTH_SHORT).show()
+            }
+
+        } else {
+
             button1.setOnClickListener {
                 val intent = Intent(this, Contact::class.java)
                 startActivity(intent)
@@ -53,51 +83,71 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             Toast.makeText(this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show()
-        } else {
 
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_CONTACTS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        this,
-                        Manifest.permission.READ_CONTACTS
-                    )
-                ) {
-                    val Aletbox: AlertDialog.Builder = AlertDialog.Builder(
-                        this
-                    )
-//                   Aletbox.setTitle("Grant These Permission")
-                    Aletbox.setMessage("This Permission Requred for Reading Contacts And etc..")
-                    Aletbox.setNegativeButton(
-                        "Deny",
-                        DialogInterface.OnClickListener { dialog, which ->
-
-                            Aletbox.show()
-                        })
-                    Aletbox.setPositiveButton(
-                        "Allow",
-                        DialogInterface.OnClickListener { dialog, which ->
-                            ActivityCompat.requestPermissions(this, permission, MyRequest)
-
-                            //
-                        })
-                    Aletbox.show()
-                }
-           else{
-
-                   Toast.makeText(this, "This PERMISSION All Redy GRANTED",Toast.LENGTH_SHORT).show()
-               }}
-           else {
-                   Toast.makeText(this, "This PERMISSION IS NOT GRANTED",Toast.LENGTH_SHORT).show()
-               }
-          // if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_CONTACTS)!=PackageManager.PERMISSION_GRANTED)
+        }
 
 
-       }
-
-
+//        if (ActivityCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.READ_CONTACTS
+//            ) == PackageManager.PERMISSION_GRANTED
+//        ) {
+//            button1.setOnClickListener {
+//                val intent = Intent(this, Contact::class.java)
+//                startActivity(intent)
+//            }
+//            button2.setOnClickListener {
+//                val intent = Intent(this, Inbox::class.java)
+//                startActivity(intent)
+//            }
+//            button3.setOnClickListener {
+//                val intent = Intent(this, Battery::class.java)
+//                startActivity(intent)
+//            }
+//            Toast.makeText(this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show()
+//        } else {
+//
+//            if (ActivityCompat.checkSelfPermission(
+//                    this,
+//                    Manifest.permission.READ_CONTACTS
+//                ) != PackageManager.PERMISSION_GRANTED
+//            ) {
+//                if (ActivityCompat.shouldShowRequestPermissionRationale(
+//                        this,
+//                        Manifest.permission.READ_CONTACTS
+//                    )
+//                ) {
+//                    val Aletbox: AlertDialog.Builder = AlertDialog.Builder(
+//                        this
+//                    )
+////                   Aletbox.setTitle("Grant These Permission")
+//                    Aletbox.setMessage("This Permission Requred for Reading Contacts And etc..")
+//                    Aletbox.setNegativeButton(
+//                        "Deny",
+//                        DialogInterface.OnClickListener { dialog, which ->
+//
+//                            Aletbox.show()
+//                        })
+//                    Aletbox.setPositiveButton(
+//                        "Allow",
+//                        DialogInterface.OnClickListener { dialog, which ->
+//                            ActivityCompat.requestPermissions(this, permission, MyRequest)
+//
+//                            //
+//                        })
+//                    Aletbox.show()
+//                }
+//           else{
+//
+//                   Toast.makeText(this, "This PERMISSION All Redy GRANTED",Toast.LENGTH_SHORT).show()
+//               }}
+//           else {
+//                   Toast.makeText(this, "This PERMISSION IS NOT GRANTED",Toast.LENGTH_SHORT).show()
+//               }
+//          // if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_CONTACTS)!=PackageManager.PERMISSION_GRANTED)
+//
+//
+//       }
 
 
     }
