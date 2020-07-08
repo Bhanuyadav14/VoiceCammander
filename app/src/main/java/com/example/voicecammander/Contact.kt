@@ -22,7 +22,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class Contact : AppCompatActivity() , RecyclerViewClickinterface,TextToSpeech.OnInitListener{
-  public  lateinit var recycleView : RecyclerView
+  lateinit var recycleView: RecyclerView
     lateinit var Recyclerinterface: RecyclerViewClickinterface
 
 
@@ -44,14 +44,26 @@ class Contact : AppCompatActivity() , RecyclerViewClickinterface,TextToSpeech.On
 
 
 
-        if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_CONTACTS)==PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(
+                applicationContext,
+                android.Manifest.permission.READ_CONTACTS
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
 
-            val contactList : MutableList<ContactLayout> = ArrayList()
-            val contacts:Cursor ?= contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null)
+            val contactList: MutableList<ContactLayout> = ArrayList()
+            val contacts: Cursor? = contentResolver.query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+            )
             if (contacts != null) {
-                while (contacts.moveToNext()){
-                    val name = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                    val number = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                while (contacts.moveToNext()) {
+                    val name =
+                        contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                    val number =
+                        contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
                     val obj = ContactLayout()
                     obj.Name = name
                     obj.Number = number
@@ -117,9 +129,10 @@ else
                     AlertBox.setMessage("You Want To Make Call To This Person : $Name")
                     AlertBox.setPositiveButton(
                         "Call",
-                        DialogInterface.OnClickListener() { dialog, which ->
+                        DialogInterface.OnClickListener { dialog, which ->
 
-                            val callIntend:Intent = Intent(Intent.ACTION_CALL, Uri.fromParts("tel",Number,null))
+                            val callIntend: Intent =
+                                Intent(Intent.ACTION_CALL, Uri.fromParts("tel", Number, null))
                             startActivity(callIntend)
 
                         })
@@ -128,8 +141,7 @@ else
 
                     AlertBox.setNegativeButton(
                         "Cancel",
-                        DialogInterface.OnClickListener() { dialog, which ->
-
+                        DialogInterface.OnClickListener { dialog, which ->
 
 
                         })

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class Inbox : AppCompatActivity() {
@@ -27,14 +28,14 @@ class Inbox : AppCompatActivity() {
 
         val recycle = findViewById<RecyclerView>(R.id.SMSLISTVIEW)
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
+        if (ContextCompat.checkSelfPermission(
+                applicationContext,
                 Manifest.permission.READ_SMS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
+            if (shouldShowRequestPermissionRationale(
+
                     Manifest.permission.READ_SMS
                 )
             ) {
@@ -78,7 +79,7 @@ class Inbox : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE) {
-            if ((grantResults.isEmpty()) && (grantResults[0] == PackageManager.PERMISSION_GRANTED) || (grantResults[1] == PackageManager.PERMISSION_GRANTED) || (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
+            if (grantResults.isEmpty() || (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
             }
             val intent = Intent(this, Inbox::class.java)
             startActivity(intent)
