@@ -45,7 +45,19 @@
         android:text="@string/here_is_massege_summary"
         android:textSize="20sp"
         android:layout_marginTop="150sp"
-        android:layout_marginStart="10dp"
-        />
+        android:layout_marginStart="10dp" />
+
+    <TextView
+        android:id="@+id/Date"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/pName"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="266dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="53dp"
+        android:text="Date Are Here"
+        android:textSize="20sp" />
 
 </RelativeLayout>

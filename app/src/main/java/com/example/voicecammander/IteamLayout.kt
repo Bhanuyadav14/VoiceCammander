@@ -7,4 +7,5 @@ class IteamLayout {
     var PName: String = ""
     var PNumber: String = ""
     var SMSMESSEGE: String = ""
+    var DATE: String = ""
 }
