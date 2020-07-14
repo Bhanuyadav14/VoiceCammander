@@ -13,10 +13,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
+@Suppress("UNREACHABLE_CODE")
 class Battery : AppCompatActivity(),TextToSpeech.OnInitListener {
 
-    var tts: TextToSpeech?=null
-
+    val tts: TextToSpeech? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,10 +24,9 @@ class Battery : AppCompatActivity(),TextToSpeech.OnInitListener {
         setContentView(R.layout.activity_battery)
 
 
-        val  tesxtView = findViewById<TextView>(R.id.BatteryResult)
-        tesxtView.text = "" + getBatteryStatus() + "%"
-
-
+        val tesxtView = findViewById<TextView>(R.id.BatteryResult).apply {
+            text = "The Battery Percentage Is :" + getBatteryStatus()
+        }
     }
 
     fun getBatteryStatus(): Int {
@@ -52,6 +51,7 @@ class Battery : AppCompatActivity(),TextToSpeech.OnInitListener {
 
     }
 
+
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             val result = tts!!.setLanguage(Locale.ENGLISH)
@@ -60,8 +60,8 @@ class Battery : AppCompatActivity(),TextToSpeech.OnInitListener {
         }
     }
 
-    private fun speakOut(bt: String) {
-        val text: String = "The Baattery Level Is ${bt}"
+    private fun speakOut(bt: Int) {
+        val text: String = "The Baattery Level Is" + bt
 
         tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
     }
@@ -69,8 +69,8 @@ class Battery : AppCompatActivity(),TextToSpeech.OnInitListener {
     public override fun onDestroy() {
         // Shutdown TTS
         if (tts != null) {
-            tts!!.stop()
-            tts!!.shutdown()
+            tts.stop()
+            tts.shutdown()
         }
         super.onDestroy()
     }

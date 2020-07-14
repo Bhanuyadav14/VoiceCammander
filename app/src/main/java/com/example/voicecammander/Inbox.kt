@@ -5,18 +5,27 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.provider.MediaStore
+import android.speech.tts.TextToSpeech
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
-class Inbox : AppCompatActivity(), SmsInterface {
+class Inbox : AppCompatActivity(), SmsInterface, TextToSpeech.OnInitListener {
 
     lateinit var smsInterface: SmsInterface
+    var tts: TextToSpeech? = null
 
     private var date: String = ""
     val REQUEST_CODE: Int = 3
@@ -27,7 +36,7 @@ class Inbox : AppCompatActivity(), SmsInterface {
             Manifest.permission.RECEIVE_SMS
         )
 
-    val SMSLIST: MutableList<IteamLayout> = ArrayList()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +86,7 @@ class Inbox : AppCompatActivity(), SmsInterface {
             }
         } else {
             //If Permission is Granted Write Code Here
+            val SMSLIST: MutableList<IteamLayout> = ArrayList()
             var cursor =
                 contentResolver.query(Uri.parse("content://sms/inbox"), null, null, null, null)
             if (cursor != null) {
@@ -85,15 +95,19 @@ class Inbox : AppCompatActivity(), SmsInterface {
                         cursor.getString(cursor.getColumnIndexOrThrow("address")).toString()
                     val MSM: String =
                         cursor.getString(cursor.getColumnIndexOrThrow("body")).toString()
-                    //val date:String = cursor.getString(cursor.getColumnIndexOrThrow("date"))
-                    //val id : String = cursor.getString(cursor.getColumnIndexOrThrow("id")).toString()
 
                     val timestamp: Long = cursor.getLong(cursor.getColumnIndex("date"))
 
                     val obj = IteamLayout()
                     obj.PNumber = name
-                    // obj.DATE= setDate(getDate(timestamp,"dd/MM/yyyy hh:mm:ss aa")).toString()
+                    obj.PName = GetContact().toString() //This Retuns PerSon Name
+
+                    if (GetImage() != null) {
+                        obj.imagesrc = GetImage()
+                    }
+
                     obj.SMSMESSEGE = MSM
+                    obj.DATE = GetDate(timestamp, "dd/MM/yyyy hh:mm:ss aa")
                     SMSLIST.add(obj)
                 }
             }
@@ -107,13 +121,7 @@ class Inbox : AppCompatActivity(), SmsInterface {
 
     }
 
-    private fun getDate(timestamp: Long, s: String): Any {
-        return date
-    }
 
-    private fun setDate(date: Any) {
-        this.date = date as String
-    }
 
 
     override fun onRequestPermissionsResult(
@@ -130,13 +138,97 @@ class Inbox : AppCompatActivity(), SmsInterface {
         }
     }
 
-    override fun onItemClick(Position: Int, SMSLIST: ArrayList<IteamLayout>) {
-        Toast.makeText(applicationContext, "You Click $Position", Toast.LENGTH_SHORT).show()
+    //Get the Contact
+    private fun GetContact(): String? {
+
+        return null
+
     }
 
+    //Get Images Of Contact
+    private fun GetImage(): Bitmap? {
+        var AV: Bitmap? = null
+        val cursor = contentResolver.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            null,
+            null,
+            null,
+            null
+        )
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                val images =
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
+
+                if (images != null) {
+                    AV = MediaStore.Images.Media.getBitmap(contentResolver, Uri.parse(images))
+                }
+
+            }
+        }
+        cursor?.close()
+        return AV
+    }
+
+    override fun onItemClick(Position: Int, SMSLIST: ArrayList<IteamLayout>) {
+        val pos: Int = Position
+        val Name: String = SMSLIST[pos].PNumber
+        val Message: String = SMSLIST[pos].SMSMESSEGE
+
+
+        Toast.makeText(
+            applicationContext,
+            " " + speakOut(Name) + "\n" + speakOut1(Message),
+            Toast.LENGTH_SHORT
+        ).show()
+
+    }
+
+    //This Function
     override fun onLongClicked(Position: Int, SMSLIST: ArrayList<IteamLayout>) {
         Toast.makeText(applicationContext, "You Click Long $Position", Toast.LENGTH_SHORT).show()
     }
 
+    override fun onInit(status: Int) {
+
+        if (status == TextToSpeech.SUCCESS) {
+            val result = tts!!.setLanguage(Locale.ENGLISH)
+        } else {
+            Toast.makeText(this, "Somethig Goes Wrong ", Toast.LENGTH_SHORT).show()
+        }
+
+
+    }
+
+    //This Function Read The Message And PerSon Name
+    private fun speakOut(text1: String) {
+        val text: String = "The Name Of Person Is :" + text1
+
+        tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, null)
+    }
+
+    public override fun onDestroy() {
+        // Shutdown TTS
+        if (tts != null) {
+            tts!!.stop()
+            tts!!.shutdown()
+        }
+        super.onDestroy()
+    }
+
+    // This Function Give The Date Of Message
+    private fun GetDate(Time: Long, dateFormate: String): String {
+        var Formate: DateFormat = SimpleDateFormat(dateFormate)
+        var calender: Calendar = Calendar.getInstance()
+        calender.timeInMillis = Time
+        return Formate.format(calender.time)
+
+    }
+
+    private fun speakOut1(message: String) {
+        val text: String = "The Name Of Person Is :" + message
+
+        tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, null)
+    }
 
 }

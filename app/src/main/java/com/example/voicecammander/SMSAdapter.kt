@@ -46,7 +46,7 @@ class SMSAdapter(
         holder.Pname.text = SMSPOSITION.PName
         holder.Pnumber.text = SMSPOSITION.PNumber
         holder.SMSmessage.text = SMSPOSITION.SMSMESSEGE
-        holder.Date.text = SMSPOSITION.DATE.toString()
+        holder.Date.text = SMSPOSITION.DATE
 
         if (SMSLIST[position].imagesrc != null) {
 
