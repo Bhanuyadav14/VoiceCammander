@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/Avataer"
-        android:layout_width="82dp"
+        android:layout_width="60dp"
         android:layout_height="85dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -17,7 +17,7 @@
         android:contentDescription="@string/todo"
         app:srcCompat="@drawable/ic_launcher_foreground" />
     <TextView
-        android:id="@+id/PNumber"
+        android:id="@+id/PName"
         android:layout_width="139dp"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/Avataer"
@@ -28,13 +28,13 @@
 
         />
     <TextView
-        android:id="@+id/pName"
+        android:id="@+id/PNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/person_name"
         android:textSize="20sp"
         android:layout_toEndOf="@id/Avataer"
-        android:layout_below="@id/PNumber"
+        android:layout_below="@id/PName"
         android:layout_marginTop="20dp"
         android:layout_marginStart="25dp"/>
 
@@ -49,15 +49,15 @@
 
     <TextView
         android:id="@+id/Date"
-        android:layout_width="115dp"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="92dp"
         android:layout_alignBottom="@+id/pName"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="266dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="53dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="7dp"
         android:text="Date Are Here"
-        android:textSize="20sp" />
+        android:textSize="14dp" />
 
 </RelativeLayout>

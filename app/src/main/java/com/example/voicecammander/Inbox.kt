@@ -92,18 +92,30 @@ class Inbox : AppCompatActivity(), SmsInterface, TextToSpeech.OnInitListener {
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     var name: String =
-                        cursor.getString(cursor.getColumnIndexOrThrow("address")).toString()
+                        cursor.getString(cursor.getColumnIndexOrThrow("address")).toString()//number
                     val MSM: String =
-                        cursor.getString(cursor.getColumnIndexOrThrow("body")).toString()
+                        cursor.getString(cursor.getColumnIndexOrThrow("body")).toString()//Message
 
                     val timestamp: Long = cursor.getLong(cursor.getColumnIndex("date"))
 
                     val obj = IteamLayout()
-                    obj.PNumber = name
-                    obj.PName = GetContact().toString() //This Retuns PerSon Name
 
-                    if (GetImage() != null) {
-                        obj.imagesrc = GetImage()
+                    if (name == GetNumber()) {
+                        obj.PName = GetContact()
+                    } else {
+                        obj.PName = name
+                    }
+
+                    if (name == GetContact()) {
+                        obj.PNumber = GetNumber()
+                    } else {
+                        obj.PNumber = name
+                    }
+
+                    if (name == GetNumber()) {
+                        if (GetImage() != null) {
+                            obj.imagesrc = GetImage()
+                        }
                     }
 
                     obj.SMSMESSEGE = MSM
@@ -122,8 +134,6 @@ class Inbox : AppCompatActivity(), SmsInterface, TextToSpeech.OnInitListener {
     }
 
 
-
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -138,11 +148,44 @@ class Inbox : AppCompatActivity(), SmsInterface, TextToSpeech.OnInitListener {
         }
     }
 
+    private fun GetNumber(): String {
+        var Pnumber: String = ""
+        val cursor = contentResolver.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            null,
+            null,
+            null,
+            null
+        )
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+
+                Pnumber =
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+            }
+        }
+        cursor?.close()
+        return Pnumber
+    }
+
     //Get the Contact
-    private fun GetContact(): String? {
-
-        return null
-
+    private fun GetContact(): String {
+        var Pname: String = ""
+        val cursor = contentResolver.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            null,
+            null,
+            null,
+            null
+        )
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                Pname =
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+            }
+        }
+        cursor?.close()
+        return Pname
     }
 
     //Get Images Of Contact
@@ -178,7 +221,7 @@ class Inbox : AppCompatActivity(), SmsInterface, TextToSpeech.OnInitListener {
 
         Toast.makeText(
             applicationContext,
-            " " + speakOut(Name) + "\n" + speakOut1(Message),
+            " " + Name + "\n" + Message,
             Toast.LENGTH_SHORT
         ).show()
 

@@ -21,7 +21,7 @@ class SMSAdapter(
     class SMSViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val imageview: ImageView = itemView.findViewById(R.id.Avataer)
-        val Pname: TextView = itemView.findViewById(R.id.pName)
+        val Pname: TextView = itemView.findViewById(R.id.PName)
         val Pnumber: TextView = itemView.findViewById(R.id.PNumber)
         val SMSmessage: TextView = itemView.findViewById(R.id.TextMAssege)
         val Date: TextView = itemView.findViewById(R.id.Date)
